@@ -125,7 +125,6 @@ export class PoTreeViewBaseComponent {
   // Se não conter parentItem, adiciona o childItem no items.
   private addItem(items: Array<PoTreeViewItem>, childItem: PoTreeViewItem, parentItem?: PoTreeViewItem) {
     if (parentItem) {
-      this.expandParentItem(childItem, parentItem);
       this.addChildItemInParent(childItem, parentItem);
       this.selectItemBySubItems(parentItem);
 
@@ -169,13 +168,6 @@ export class PoTreeViewBaseComponent {
     }
 
     return false;
-  }
-
-  // expande o item pai caso o filho estiver expandido.
-  private expandParentItem(childItem: PoTreeViewItem, parentItem: PoTreeViewItem) {
-    if (childItem.expanded) {
-      parentItem.expanded = true;
-    }
   }
 
   private getItemsByMaxLevel(

@@ -172,7 +172,6 @@ describe('PoTreeViewBaseComponent:', () => {
 
       const expectedValue = [childItem];
 
-      const spyExpandParentItem = spyOn(component, <any>'expandParentItem');
       const spyAddChildItemInParent = spyOn(component, <any>'addChildItemInParent');
 
       component['addItem'](items, childItem);
@@ -180,7 +179,6 @@ describe('PoTreeViewBaseComponent:', () => {
       expect(items.length).toBe(1);
       expect(items).toEqual(expectedValue);
       expect(spyAddChildItemInParent).not.toHaveBeenCalled();
-      expect(spyExpandParentItem).not.toHaveBeenCalled();
     });
 
     it('addItem: should add parentItem in items and call expandParentItem, addChildItemInParent and selectItemBySubItems', () => {
@@ -190,7 +188,6 @@ describe('PoTreeViewBaseComponent:', () => {
 
       const expectedValue = [parentItem];
 
-      const spyExpandParentItem = spyOn(component, <any>'expandParentItem');
       const spyAddChildItemInParent = spyOn(component, <any>'addChildItemInParent');
       const spySelectItemBySubItems = spyOn(component, <any>'selectItemBySubItems');
 
@@ -200,7 +197,6 @@ describe('PoTreeViewBaseComponent:', () => {
       expect(items).toEqual(expectedValue);
       expect(spySelectItemBySubItems).toHaveBeenCalledWith(parentItem);
       expect(spyAddChildItemInParent).toHaveBeenCalledWith(childItem, parentItem);
-      expect(spyExpandParentItem).toHaveBeenCalledWith(childItem, parentItem);
     });
 
     it('addChildItemInParent: should create an empty array in parentItem.subItems if it is falsy and add childItem', () => {
@@ -221,33 +217,6 @@ describe('PoTreeViewBaseComponent:', () => {
 
       expect(parentItem.subItems.length).toBe(2);
       expect(parentItem.subItems[1]).toEqual(childItem);
-    });
-
-    it('expandParentItem: parentItem.expanded should be true if childItem.expanded is true', () => {
-      const childItem = { label: 'Nivel 2', value: 12, expanded: true };
-      const parentItem = { label: 'Nivel 1', value: 1, expanded: undefined };
-
-      component['expandParentItem'](childItem, parentItem);
-
-      expect(parentItem.expanded).toBe(true);
-    });
-
-    it('expandParentItem: parentItem.expanded should be true if childItem.expanded is false and parentItem.expanded is true', () => {
-      const childItem = { label: 'Nivel 2', value: 12, expanded: false };
-      const parentItem = { label: 'Nivel 1', value: 1, expanded: true };
-
-      component['expandParentItem'](childItem, parentItem);
-
-      expect(parentItem.expanded).toBe(true);
-    });
-
-    it('expandParentItem: parentItem.expanded should be false if childItem.expanded is false', () => {
-      const childItem = { label: 'Nivel 2', value: 12, expanded: false };
-      const parentItem = { label: 'Nivel 1', value: 1, expanded: false };
-
-      component['expandParentItem'](childItem, parentItem);
-
-      expect(parentItem.expanded).toBe(false);
     });
 
     it('updateItemsOnSelect: shouldn`t call selectAllItems if selectedItem hasn`t subItems', () => {
