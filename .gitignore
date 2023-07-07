@@ -1,4 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+.gitignore
+*.js
 
 # compiled output
 /dist
@@ -57,3 +59,4 @@ projects/portal/src/app/menu.service.ts
 projects/portal/src/assets/json/api-list.json
 projects/portal/src/assets/json/version.json
 projects/portal/src/app/documentation/documentation-routing.module.ts
+projects/app/e2e/src/app.e2e-spec.js
