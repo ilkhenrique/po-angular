@@ -1,6 +1,5 @@
 <po-field-container
   [p-disabled]="disabled"
-  [p-help]="help"
   [p-label]="label"
   [p-optional]="optional"
   [p-required]="required"
@@ -60,11 +59,12 @@
     [p-placeholder-search]="placeholderSearch"
     [p-field-value]="fieldValue"
     [p-field-label]="fieldLabel"
+    [p-multiselect-template]="multiselectOptionTemplate"
     (p-change)="changeItems($event)"
     (p-change-search)="changeSearch($event)"
     (p-close-dropdown)="controlDropdownVisibility(false)"
   >
   </po-multiselect-dropdown>
 
-  <po-field-container-bottom></po-field-container-bottom>
+  <po-field-container-bottom [p-help]="help" [p-disabled]="disabled"></po-field-container-bottom>
 </po-field-container>

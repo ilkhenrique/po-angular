@@ -1,12 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { configureTestSuite } from './../../../util-test/util-expect.spec';
-
 import * as UtilsFunctions from '../../../utils/util';
 import { removeDuplicatedOptions } from '../../../utils/util';
 
 import { PoFieldContainerBottomComponent } from '../po-field-container/po-field-container-bottom/po-field-container-bottom.component';
 import { PoFieldContainerComponent } from '../po-field-container/po-field-container.component';
+import { PoRadioComponent } from '../po-radio/po-radio.component';
 import { PoRadioGroupBaseComponent } from './po-radio-group-base.component';
 import { PoRadioGroupComponent } from './po-radio-group.component';
 
@@ -16,14 +15,17 @@ describe('PoRadioGroupComponent:', () => {
 
   let debugElement;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
-      declarations: [PoRadioGroupComponent, PoFieldContainerComponent, PoFieldContainerBottomComponent],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [
+        PoRadioGroupComponent,
+        PoFieldContainerComponent,
+        PoFieldContainerBottomComponent,
+        PoRadioComponent
+      ],
       providers: []
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoRadioGroupComponent);
     component = fixture.componentInstance;
     component.label = 'Label de teste';
@@ -132,11 +134,11 @@ describe('PoRadioGroupComponent:', () => {
 
         fixture.detectChanges();
 
-        spyOn(component.radioLabels.toArray()[0].nativeElement, 'focus');
+        spyOn(component.radioLabels.toArray()[0], 'focus');
 
         component.focus();
 
-        expect(component.radioLabels.toArray()[0].nativeElement.focus).toHaveBeenCalled();
+        expect(component.radioLabels.toArray()[0].focus).toHaveBeenCalled();
       });
 
       it('should call second radio option if the first option is disabled', () => {
@@ -148,13 +150,13 @@ describe('PoRadioGroupComponent:', () => {
 
         fixture.detectChanges();
 
-        spyOn(component.radioLabels.toArray()[0].nativeElement, 'focus');
-        spyOn(component.radioLabels.toArray()[1].nativeElement, 'focus');
+        spyOn(component.radioLabels.toArray()[0], 'focus');
+        spyOn(component.radioLabels.toArray()[1], 'focus');
 
         component.focus();
 
-        expect(component.radioLabels.toArray()[0].nativeElement.focus).not.toHaveBeenCalled();
-        expect(component.radioLabels.toArray()[1].nativeElement.focus).toHaveBeenCalled();
+        expect(component.radioLabels.toArray()[0].focus).not.toHaveBeenCalled();
+        expect(component.radioLabels.toArray()[1].focus).toHaveBeenCalled();
       });
 
       it('shouldn`t call `focus` of radio if `disabled` property of component is true', () => {
@@ -166,13 +168,13 @@ describe('PoRadioGroupComponent:', () => {
 
         fixture.detectChanges();
 
-        spyOn(component.radioLabels.toArray()[0].nativeElement, 'focus');
-        spyOn(component.radioLabels.toArray()[1].nativeElement, 'focus');
+        spyOn(component.radioLabels.toArray()[0], 'focus');
+        spyOn(component.radioLabels.toArray()[1], 'focus');
 
         component.focus();
 
-        expect(component.radioLabels.toArray()[0].nativeElement.focus).not.toHaveBeenCalled();
-        expect(component.radioLabels.toArray()[1].nativeElement.focus).not.toHaveBeenCalled();
+        expect(component.radioLabels.toArray()[0].focus).not.toHaveBeenCalled();
+        expect(component.radioLabels.toArray()[1].focus).not.toHaveBeenCalled();
       });
 
       it('shouldn`t call `focus` of radio if `undefined` property of component is true', () => {
@@ -181,7 +183,7 @@ describe('PoRadioGroupComponent:', () => {
 
         fixture.detectChanges();
 
-        const spy = spyOn(component.radioLabels.toArray()[0].nativeElement, 'focus');
+        const spy = spyOn(component.radioLabels.toArray()[0], 'focus');
 
         component.focus();
 

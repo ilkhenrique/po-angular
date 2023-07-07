@@ -4,8 +4,6 @@ import { By } from '@angular/platform-browser';
 
 import { Observable } from 'rxjs';
 
-import { configureTestSuite } from './../../util-test/util-expect.spec';
-
 import { PoIconModule } from '../po-icon/po-icon.module';
 import { PoTooltipModule } from '../../directives/po-tooltip/index';
 
@@ -32,14 +30,12 @@ describe('PoTagComponent:', () => {
 
   let nativeElement: any;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoTagComponent, PoTagClickableComponent],
       imports: [PoIconModule, PoTooltipModule]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoTagComponent);
     component = fixture.componentInstance;
 
@@ -187,6 +183,39 @@ describe('PoTagComponent:', () => {
       tagElement.triggerEventHandler('keyup.enter', fakeEvent);
 
       expect(spyOnClick).not.toHaveBeenCalled();
+    });
+
+    it('onClose: Should have been called onClose', () => {
+      spyOn(component.click, <any>'emit');
+      spyOn(component, <any>'onRemove');
+
+      component.onClose();
+
+      expect(component.click.emit).toHaveBeenCalledWith(null);
+    });
+
+    it('onRemove: Should remove the element if not disabled', () => {
+      const mockElementRef = {
+        nativeElement: {
+          remove: jasmine.createSpy('remove')
+        }
+      };
+      component['el'] = mockElementRef;
+      component.disabled = false;
+
+      component['onRemove']();
+
+      expect(mockElementRef.nativeElement.remove).toHaveBeenCalled();
+    });
+
+    it('should set aria-label', () => {
+      component.label = 'Label';
+      expect(component.setAriaLabel()).toContain('Label Remove');
+    });
+
+    it('should set aria-label', () => {
+      component.value = 'Label';
+      expect(component.setAriaLabel()).toContain('Label Remove');
     });
   });
 
@@ -358,7 +387,15 @@ describe('PoTagComponent:', () => {
       component.customColor = 'red';
 
       const result = component.styleTag();
-      expect(result).toEqual({ 'background-color': 'red' });
+      expect(result).toEqual({ 'background-color': 'red', 'color': 'white' });
+    });
+
+    it('styleTag : should change customTextColor to white if it is not defined and customColor is defined ', () => {
+      component.customTextColor = '';
+      component.customColor = 'red';
+
+      const result = component.styleTag();
+      expect(result).toEqual({ 'background-color': 'red', 'color': 'white' });
     });
 
     it('styleTag : should change the border if there is inverse and customColor', () => {

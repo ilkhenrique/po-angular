@@ -1,20 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { configureTestSuite } from '../../../util-test/util-expect.spec';
-
 import { PoNavbarLogoComponent } from './po-navbar-logo.component';
 
 describe('PoNavbarLogoComponent:', () => {
   let component: PoNavbarLogoComponent;
   let fixture: ComponentFixture<PoNavbarLogoComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoNavbarLogoComponent]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoNavbarLogoComponent);
     component = fixture.componentInstance;
 
@@ -26,20 +22,20 @@ describe('PoNavbarLogoComponent:', () => {
   });
 
   describe('Templates:', () => {
-    it('should create tag img if `logo` has value', () => {
+    it('should create `po-logo` component if `logo` has value', () => {
       component.logo = 'http://lorempixel.com/200/200/';
 
       fixture.detectChanges();
 
-      expect(fixture.debugElement.nativeElement.querySelector('.po-navbar-logo-image')).toBeTruthy();
+      expect(fixture.debugElement.nativeElement.querySelector('po-logo')).toBeTruthy();
     });
 
-    it('shouldn`t create tag img if `logo` is undefined', () => {
+    it('shouldn`t create `po-logo` component if `logo` is undefined', () => {
       component.logo = undefined;
 
       fixture.detectChanges();
 
-      expect(fixture.debugElement.nativeElement.querySelector('.po-navbar-logo-image')).toBeNull();
+      expect(fixture.debugElement.nativeElement.querySelector('po-logo')).toBeNull();
     });
   });
 });

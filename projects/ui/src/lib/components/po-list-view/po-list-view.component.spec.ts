@@ -4,8 +4,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { Observable } from 'rxjs';
 
-import { configureTestSuite } from './../../util-test/util-expect.spec';
-
 import * as UtilsFunctions from '../../utils/util';
 import { PoButtonModule } from '../po-button';
 import { PoPopupModule } from '../po-popup';
@@ -17,17 +15,20 @@ describe('PoListViewComponent:', () => {
   let component: PoListViewComponent;
   let fixture: ComponentFixture<PoListViewComponent>;
   let debugElement;
+  let event: AnimationEvent;
+  let detail: any;
 
   const item = { id: 1, name: 'register' };
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoListViewComponent],
       imports: [BrowserAnimationsModule, RouterTestingModule.withRoutes([]), PoButtonModule, PoPopupModule]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
+    detail = { test: 'test' };
+    event = new AnimationEvent('animationstart', { animationName: 'test', elapsedTime: 100 });
+
     fixture = TestBed.createComponent(PoListViewComponent);
 
     component = fixture.componentInstance;
@@ -183,6 +184,14 @@ describe('PoListViewComponent:', () => {
       expect(component['changeDetector'].detectChanges).toHaveBeenCalled();
       expect(component.poPopupComponent.toggle).toHaveBeenCalledWith(item);
       expect(component.popupTarget).toEqual(targetRef);
+    });
+
+    it(`onAnimationEvent: should emit detail on showDetail`, () => {
+      spyOn(component.showDetail, 'emit');
+
+      component.onAnimationEvent(event, detail);
+
+      expect(component.showDetail.emit).toHaveBeenCalledWith(detail);
     });
 
     it('trackBy: should return `index`', () => {

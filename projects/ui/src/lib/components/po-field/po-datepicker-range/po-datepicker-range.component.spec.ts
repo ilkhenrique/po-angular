@@ -142,29 +142,29 @@ describe('PoDatepickerRangeComponent:', () => {
 
     it(`isDateRangeInputUncompleted: should return true if length of 'endDateInputValue' and 'startDateInputValue' is
       less than  10`, () => {
-      spyOnProperty(component, 'endDateInputValue').and.returnValue({ length: 5 });
-      spyOnProperty(component, 'startDateInputValue').and.returnValue({ length: 2 });
+      spyOnProperty(component, 'endDateInputValue').and.returnValue('01/12');
+      spyOnProperty(component, 'startDateInputValue').and.returnValue('01');
 
       expect(component.isDateRangeInputUncompleted).toBeTruthy();
     });
 
     it(`isDateRangeInputUncompleted: should return false if length of 'endDateInputValue' is 10`, () => {
-      spyOnProperty(component, 'endDateInputValue').and.returnValue({ length: 10 });
-      spyOnProperty(component, 'startDateInputValue').and.returnValue({ length: 2 });
+      spyOnProperty(component, 'endDateInputValue').and.returnValue('01/12/2023');
+      spyOnProperty(component, 'startDateInputValue').and.returnValue('01');
 
       expect(component.isDateRangeInputUncompleted).toBeFalsy();
     });
 
     it(`isDateRangeInputUncompleted: should return false if length of 'startDateInputValue' is 10`, () => {
-      spyOnProperty(component, 'endDateInputValue').and.returnValue({ length: 5 });
-      spyOnProperty(component, 'startDateInputValue').and.returnValue({ length: 10 });
+      spyOnProperty(component, 'endDateInputValue').and.returnValue('02/12');
+      spyOnProperty(component, 'startDateInputValue').and.returnValue('01/12/2023');
 
       expect(component.isDateRangeInputUncompleted).toBeFalsy();
     });
 
     it(`isDirtyDateRangeInput: should return false if length of 'endDateInputValue' and 'startDateInputValue' are 0`, () => {
-      spyOnProperty(component, 'endDateInputValue').and.returnValue({ length: 0 });
-      spyOnProperty(component, 'startDateInputValue').and.returnValue({ length: 0 });
+      spyOnProperty(component, 'endDateInputValue').and.returnValue('');
+      spyOnProperty(component, 'startDateInputValue').and.returnValue('');
 
       expect(component.isDirtyDateRangeInput).toBeFalsy();
     });
@@ -254,6 +254,33 @@ describe('PoDatepickerRangeComponent:', () => {
       component.ngOnChanges(changes);
 
       expect(spy).not.toHaveBeenCalled();
+    });
+
+    it(`ngOnChanges: shouldn't call 'updateScreenByModel' if 'changes' contain locale`, () => {
+      const changes: any = {
+        locale: 'pt'
+      };
+
+      const spy = spyOn(component, <any>'buildMask');
+
+      component.ngOnChanges(changes);
+
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it(`ngOnChanges: shouldn't call 'updateScreenByModel' if 'changes' contain locale and contain 'dateRange'`, () => {
+      const changes: any = {
+        locale: 'pt'
+      };
+      component.dateRange = { start: '2023-01-25', end: '2023-02-21' };
+
+      const spyBuildMask = spyOn(component, <any>'buildMask');
+      const spyUpdateScreenByModel = spyOn(component, <any>'updateScreenByModel');
+
+      component.ngOnChanges(changes);
+
+      expect(spyBuildMask).toHaveBeenCalled();
+      expect(spyUpdateScreenByModel).toHaveBeenCalled();
     });
 
     it('clear: should call `updateScreenByModel`, `resetDateRangeInputValidation` and `updateModel`', () => {
@@ -602,6 +629,13 @@ describe('PoDatepickerRangeComponent:', () => {
       const date = [undefined, '3', '2018'];
 
       expect(component['formatDate'](format, ...date)).toBe('2018-03-0');
+    });
+
+    it('formatDate: should convert date to `yyyy-mm-` with default format value', () => {
+      component['format'] = 'yyyy-mm-dd';
+      const date = [undefined, '3', '2018'];
+
+      expect(component['formatDate'](undefined, ...date)).toBe('2018-03-0');
     });
 
     it('formatScreenToModel: should return empty string if value is undefined', () => {

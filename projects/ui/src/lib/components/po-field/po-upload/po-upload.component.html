@@ -1,6 +1,5 @@
 <po-field-container
   [p-disabled]="isDisabled"
-  [p-help]="help"
   [p-id]="id"
   [p-label]="label"
   [p-optional]="optional"
@@ -15,8 +14,8 @@
         type="file"
         [accept]="allowedExtensions"
         [attr.name]="name"
-        [disabled]="isDisabled"
         [id]="id"
+        [disabled]="isDisabled"
         [multiple]="isMultiple"
         [required]="required"
         (change)="onFileChange($event)"
@@ -85,8 +84,8 @@
         [p-disabled]="hasAnyFileUploading(currentFiles)"
         [p-label]="literals.startSending"
         (p-click)="uploadFiles(currentFiles)"
-      >
-      </po-button>
+      ></po-button>
     </div>
   </div>
+  <po-field-container-bottom [p-help]="help" [p-disabled]="disabled"></po-field-container-bottom>
 </po-field-container>

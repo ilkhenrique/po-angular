@@ -33,7 +33,9 @@ export class SamplePoInputLabsComponent implements OnInit {
     { value: 'noAutocomplete', label: 'No Autocomplete' },
     { value: 'optional', label: 'Optional' },
     { value: 'readonly', label: 'Read Only' },
-    { value: 'required', label: 'Required' }
+    { value: 'required', label: 'Required' },
+    { value: 'uppercase', label: 'Upper Case' },
+    { value: 'showRequired', label: 'Show Required' }
   ];
 
   ngOnInit() {

@@ -3,16 +3,16 @@
 
 ### Pré-requisitos
 
-Para começar a utilizar o **PO UI** é pré-requisito ter o `Node.js` instalado (versão 14.15.0 ou acima) e o seu gerenciador de pacote favorito na versão mais atual. Caso você ainda não tenha instalado o pacote `@angular/cli`, instale-o via `npm` ou `yarn`.
+Para começar a utilizar o **PO UI** é pré-requisito ter o `Node.js` instalado (versão 14.20.x ou acima) e o seu gerenciador de pacote favorito na versão mais atual. Caso você ainda não tenha instalado o pacote `@angular/cli`, instale-o via `npm` ou `yarn`.
 
 Instalando com npm:
 ```
-npm i -g @angular/cli@14
+npm i -g @angular/cli@15
 ```
 
 Caso prefira instalar com o yarn:
 ```
-yarn global add @angular/cli@14
+yarn global add @angular/cli@15
 ```
 
 ### Passo 1 - Crie o seu primeiro projeto
@@ -36,22 +36,25 @@ Veja abaixo a lista de dependências e as versões compatíveis, elas devem ser 
 
 ```
   "dependencies": {
-    "@angular/animations": "~14.0.2",
-    "@angular/common": "~14.0.2",
-    "@angular/compiler": "~14.0.2",
-    "@angular/core": "~14.0.2",
-    "@angular/forms": "~14.0.2",
-    "@angular/platform-browser": "~14.0.2",
-    "@angular/platform-browser-dynamic": "~14.0.2",
-    "@angular/router": "~14.0.2",
+    "@angular/animations": "~15.0.3",
+    "@angular/common": "~15.0.3",
+    "@angular/compiler": "~15.0.3",
+    "@angular/core": "~15.0.3",
+    "@angular/forms": "~15.0.3",
+    "@angular/platform-browser": "~15.0.3",
+    "@angular/platform-browser-dynamic": "~15.0.3",
+    "@angular/router": "~15.0.3",
     "rxjs": "~7.5.5",
     "tslib": "^2.3.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.12.0"
     ...
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "~15.0.3",
+    "@angular/cli": "~15.0.3",
+    "@angular/compiler-cli": "~15.0.3",
     ...
-    "typescript": "~4.7.4"
+    "typescript": "~4.8.4"
   }
 ```
 
@@ -69,7 +72,7 @@ yarn install
 
 ### Passo 2 - Adiconando o pacote @po-ui/ng-components
 
-Utilizando o comando `ng add` do [Angular CLI](https://cli.angular.io/), vamos adicionar o **Po** em seu projeto e o mesmo se encarregará de configurar o tema, instalar o pacote e importar o módulo do **Po**.
+Utilizando o comando `ng add` do [Angular CLI](https://cli.angular.io/), vamos adicionar o **Po** em seu projeto e o mesmo se encarregará de configurar o tema, instalar o pacote e importar o módulo do **Po**. Além de importar também o modulo **HttpClientModule**.
 
 Execute o comando abaixo na pasta raiz do seu projeto:
 

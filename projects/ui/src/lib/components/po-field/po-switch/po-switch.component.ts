@@ -8,6 +8,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { InputBoolean } from '../../../decorators';
 
 import { uuid } from '../../../utils/util';
 
@@ -77,15 +78,41 @@ import { PoSwitchLabelPosition } from './po-switch-label-position.enum';
     }
   ]
 })
-export class PoSwitchComponent extends PoFieldModel<boolean> {
+export class PoSwitchComponent extends PoFieldModel<any> {
   @ViewChild('switchContainer', { static: true }) switchContainer: ElementRef;
 
   id = `po-switch[${uuid()}]`;
+
+  // Parâmetro interno, não documentar
+  @Input('p-value')
+  @InputBoolean()
   value = false;
 
   private _labelOff: string = 'false';
   private _labelOn: string = 'true';
   private _labelPosition: PoSwitchLabelPosition = PoSwitchLabelPosition.Right;
+  private _formatModel: boolean = false;
+
+  /**
+   * @optional
+   *
+   * @description
+   *
+   * Indica se o `model` receberá o valor formatado pelas propriedades `p-label-on` e `p-label-off` ou
+   * apenas o valor puro (sem formatação).
+   *
+   * > Por padrão será atribuído `false`.
+   * @default `false`
+   */
+  @Input('p-format-model')
+  @InputBoolean()
+  set formatModel(format: boolean) {
+    this._formatModel = format || false;
+  }
+
+  get formatModel() {
+    return this._formatModel;
+  }
 
   /**
    * @optional
@@ -182,7 +209,15 @@ export class PoSwitchComponent extends PoFieldModel<boolean> {
   changeValue(value: any) {
     if (this.value !== value) {
       this.value = value;
-      this.updateModel(value);
+      if (this.formatModel) {
+        if (this.value) {
+          this.updateModel(this.labelOn);
+        } else {
+          this.updateModel(this.labelOff);
+        }
+      } else {
+        this.updateModel(value);
+      }
       this.emitChange(this.value);
     }
   }
@@ -195,8 +230,11 @@ export class PoSwitchComponent extends PoFieldModel<boolean> {
 
   onWriteValue(value: any): void {
     if (value !== this.value) {
-      this.value = !!value;
-
+      if (this.formatModel && !!value) {
+        this.value = value.toLowerCase() === this.labelOn.toLowerCase();
+      } else {
+        this.value = !!value;
+      }
       this.changeDetector.markForCheck();
     }
   }

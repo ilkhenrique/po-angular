@@ -2,8 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Subject } from 'rxjs';
 
-import { configureTestSuite } from './../../util-test/util-expect.spec';
-
 import { PoContainerComponent } from '../po-container';
 import { PoWidgetComponent } from './po-widget.component';
 
@@ -11,13 +9,11 @@ describe('PoWidgetComponent with only body', () => {
   let component: PoWidgetComponent;
   let fixture: ComponentFixture<PoWidgetComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoWidgetComponent, PoContainerComponent]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoWidgetComponent);
     component = fixture.componentInstance;
     component.height = 200;
@@ -46,12 +42,27 @@ describe('PoWidgetComponent with only body', () => {
     expect(nativeElement.querySelector('.po-widget-no-shadow')).toBeFalsy();
   });
 
-  it('should set noShadow to true', () => {
+  it('should`t set noShadow to true if the widget is not clickable', () => {
     const nativeElement = fixture.nativeElement;
     component.noShadow = true;
     fixture.detectChanges();
+    expect(nativeElement.querySelector('.po-widget-no-shadow')).toBeFalsy();
+  });
 
+  it('should set noShadow in template if the widget is clickable and noShadow is true', () => {
+    component.click.subscribe(() => {});
+    component.noShadow = true;
+    const nativeElement = fixture.nativeElement;
+    fixture.detectChanges();
     expect(nativeElement.querySelector('.po-widget-no-shadow')).toBeTruthy();
+  });
+
+  it('should`t set noShadow in template if the widget is clickable and noShadow is false', () => {
+    component.click.subscribe(() => {});
+    component.noShadow = false;
+    const nativeElement = fixture.nativeElement;
+    fixture.detectChanges();
+    expect(nativeElement.querySelector('.po-widget-no-shadow')).toBeFalsy();
   });
 });
 
@@ -65,13 +76,11 @@ describe('PoWidgetComponent with title and actions', () => {
   const eventClick = document.createEvent('MouseEvent');
   eventClick.initEvent('click', false, true);
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoWidgetComponent, PoContainerComponent]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoWidgetComponent);
     component = fixture.componentInstance;
     nativeElement = fixture.nativeElement;
@@ -668,13 +677,11 @@ describe('PoWidgetComponent with actions', () => {
   let component: PoWidgetComponent;
   let fixture: ComponentFixture<PoWidgetComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoWidgetComponent, PoContainerComponent]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoWidgetComponent);
     component = fixture.componentInstance;
     component.primaryAction = null;
@@ -698,13 +705,11 @@ describe('PoWidgetComponent with background and actions', () => {
 
   const image: string = 'http://lorempixel.com/400/400/';
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       declarations: [PoWidgetComponent, PoContainerComponent]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoWidgetComponent);
     component = fixture.componentInstance;
     component.primaryAction = null;

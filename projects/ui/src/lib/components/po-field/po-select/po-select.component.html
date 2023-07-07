@@ -1,6 +1,5 @@
 <po-field-container
   [p-disabled]="disabled"
-  [p-help]="help"
   [p-id]="id"
   [p-label]="label"
   [p-optional]="optional"
@@ -12,7 +11,7 @@
       #select
       class="po-select"
       [attr.name]="name"
-      [class.po-select-placeholder]="!selectedValue && !!placeholder"
+      [class.po-select-placeholder]="!selectedValue?.toString() && !!placeholder"
       [disabled]="disabled"
       [id]="id"
       [required]="required"
@@ -20,10 +19,10 @@
       (change)="onSelectChange($event.target.value)"
     >
       <option
-        *ngIf="!selectedValue || !!placeholder"
+        *ngIf="!selectedValue?.toString() || !!placeholder"
         [disabled]="!!placeholder"
-        [hidden]="!selectedValue && !placeholder"
-        [selected]="!selectedValue"
+        [hidden]="!selectedValue?.toString() && !placeholder"
+        [selected]="!selectedValue?.toString()"
         [value]="placeholder ?? ''"
       >
         {{ placeholder }}
@@ -38,5 +37,5 @@
     </select>
   </div>
 
-  <po-field-container-bottom></po-field-container-bottom>
+  <po-field-container-bottom [p-help]="help" [p-disabled]="disabled"></po-field-container-bottom>
 </po-field-container>

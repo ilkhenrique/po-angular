@@ -1,7 +1,7 @@
 import { PoButtonBaseComponent } from './po-button-base.component';
 
 import { expectPropertiesValues } from '../../util-test/util-expect.spec';
-import { PoButtonKind } from './po-button-type.enum';
+import { PoButtonKind } from './po-button-kind.enum';
 import { PoButtonSize } from './po-button-size.enum';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -37,15 +37,15 @@ describe('PoButtonBaseComponent', () => {
 
   it('should update property `p-kind` with valid values', () => {
     component.danger = false;
-    const validValues = ['primary', 'secondary', 'tertiary', 'danger'];
+    const validValues = ['primary', 'secondary', 'tertiary'];
 
-    expectPropertiesValues(component, 'type', validValues, validValues);
+    expectPropertiesValues(component, 'kind', validValues, validValues);
   });
 
   it('should update property `p-kind` with `secondary` when invalid values', () => {
     const invalidValues = [undefined, null, '', true, false, 0, 1, 'aa', [], {}];
 
-    expectPropertiesValues(component, 'type', invalidValues, 'secondary');
+    expectPropertiesValues(component, 'kind', invalidValues, 'secondary');
   });
 
   it('should set `p-danger` with false if `p-kind` is tertiary', () => {

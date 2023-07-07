@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { expectPropertiesValues, configureTestSuite } from '../../../util-test/util-expect.spec';
+import { expectPropertiesValues } from '../../../util-test/util-expect.spec';
 
 import * as utilsFunctions from '../../../utils/util';
 
@@ -14,13 +14,11 @@ describe('PoTableDetailComponent', () => {
   let fixture: ComponentFixture<PoTableDetailComponent>;
   let nativeElement;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [PoTableModule]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoTableDetailComponent);
     component = fixture.componentInstance;
 
@@ -369,6 +367,24 @@ describe('PoTableDetailComponent', () => {
       fixture.detectChanges();
       const number = detailElement.querySelector(elementDetail).innerText;
       expect(number).toEqual(expectedReturn);
+    });
+
+    it('should find .po-table-header-flex-right if columns has number type', () => {
+      component.detail = { columns: [{ property: 'number', label: 'Number', type: 'number' }] };
+      component.detail['typeHeader'] = 'top';
+      component.items = [{ number: 333 }];
+
+      fixture.detectChanges();
+      expect(detailElement.querySelector('.po-table-header-flex-right')).toBeTruthy();
+    });
+
+    it('should find .po-table-column-right if columns has currency type', () => {
+      component.detail = { columns: [{ property: 'currency', label: 'Currency', type: 'currency' }] };
+      component.detail['typeHeader'] = 'top';
+      component.items = [{ currency: 2000 }];
+
+      fixture.detectChanges();
+      expect(detailElement.querySelector('.po-table-column-right')).toBeTruthy();
     });
   });
 });

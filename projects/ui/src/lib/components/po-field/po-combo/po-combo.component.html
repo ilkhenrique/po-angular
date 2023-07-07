@@ -1,6 +1,5 @@
 <po-field-container
   [p-disabled]="disabled"
-  [p-help]="help"
   [p-id]="id"
   [p-label]="label"
   [p-optional]="optional"
@@ -51,13 +50,13 @@
   </div>
 
   <div #containerElement class="po-combo-container" [hidden]="!comboOpen && !isServerSearching">
-    <ng-container *ngIf="visibleOptions.length; then visibleOptionsTemplate; else noDataTemplate"> </ng-container>
+    <ng-container *ngIf="checkTemplate(); then visibleOptionsTemplate; else noDataTemplate"> </ng-container>
     <div *ngIf="isServerSearching">
       <ng-container *ngIf="infiniteLoading; then infiniteLoadingTemplate; else normalLoadingTemplate"></ng-container>
     </div>
   </div>
 
-  <po-field-container-bottom></po-field-container-bottom>
+  <po-field-container-bottom [p-help]="help" [p-disabled]="disabled"></po-field-container-bottom>
 </po-field-container>
 
 <ng-template #normalLoadingTemplate>

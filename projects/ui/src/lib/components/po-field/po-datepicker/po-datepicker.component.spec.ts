@@ -1,8 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
-import { configureTestSuite } from './../../../util-test/util-expect.spec';
-
 import * as UtilsFunctions from '../../../utils/util';
 import { formatYear, setYearFrom0To100 } from '../../../utils/util';
 
@@ -26,14 +24,12 @@ describe('PoDatepickerComponent:', () => {
   let component: PoDatepickerComponent;
   let fixture: ComponentFixture<PoDatepickerComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [PoDatepickerModule, PoCalendarModule],
       providers: [PoCalendarService, PoCalendarLangService]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoDatepickerComponent);
     component = fixture.componentInstance;
     component.label = 'Label de teste';
@@ -223,15 +219,13 @@ describe('PoDatepicker mocked with form', () => {
   let component: ContentProjectionComponent;
   let fixture: ComponentFixture<ContentProjectionComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [PoDatepickerModule],
       declarations: [ContentProjectionComponent],
       providers: [PoCalendarService, PoCalendarLangService]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(ContentProjectionComponent);
     component = fixture.componentInstance;
   });
@@ -251,14 +245,12 @@ describe('PoDatepickerComponent:', () => {
   let component: PoDatepickerComponent;
   let fixture: ComponentFixture<PoDatepickerComponent>;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [PoDatepickerModule],
       providers: [PoCalendarService, PoCalendarLangService]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoDatepickerComponent);
     component = fixture.componentInstance;
     component.label = 'Label de teste';
@@ -707,7 +699,7 @@ describe('PoDatepickerComponent:', () => {
       const expectedData: any = '28/02/2019';
 
       spyOn(UtilsFunctions, 'formatYear').and.returnValue('2019');
-      spyOn(component, <any>'replaceFormatSeparator').and.returnValue('28/02/2019');
+      spyOn(UtilsFunctions, <any>'replaceFormatSeparator').and.returnValue('28/02/2019');
 
       const formattedDate = component.formatToDate(newDate);
       expect(formattedDate).toBe(expectedData);
@@ -1009,7 +1001,7 @@ describe('PoDatepickerComponent:', () => {
     it('writeValue: should keep `hour` with it`s default value if date isn`t an extended iso format', () => {
       component.writeValue('2019-11-21');
 
-      expect(component.hour).toBe('T00:00:01-00:00');
+      expect(component.hour).toBe('T00:00:00-00:00');
     });
 
     it('onKeyup: should change value of the mask when typing', () => {
@@ -1152,36 +1144,6 @@ describe('PoDatepickerComponent:', () => {
 
       fixture.detectChanges();
       expect(fixture.debugElement.nativeElement.querySelector('po-clean')).toBe(null);
-    });
-  });
-  describe('replaceFormatSeparator: ', () => {
-    it('should show date separator as . according to russian locale selected', () => {
-      component.locale = 'ru';
-      component.format = 'dd/mm/yyyy';
-      const expectedFormat = 'dd.mm.yyyy';
-      const newFormat = component['replaceFormatSeparator']();
-      expect(newFormat).toBe(expectedFormat);
-    });
-    it('should show date separator as / according to portuguese locale selected', () => {
-      component.locale = 'pt';
-      component.format = 'dd/mm/yyyy';
-      const expectedFormat = 'dd/mm/yyyy';
-      const newFormat = component['replaceFormatSeparator']();
-      expect(newFormat).toBe(expectedFormat);
-    });
-    it('should show date separator as / according to english locale selected', () => {
-      component.locale = 'en';
-      component.format = 'dd/mm/yyyy';
-      const expectedFormat = 'dd/mm/yyyy';
-      const newFormat = component['replaceFormatSeparator']();
-      expect(newFormat).toBe(expectedFormat);
-    });
-    it('should show date separator as / according to spanish locale selected', () => {
-      component.locale = 'es';
-      component.format = 'dd/mm/yyyy';
-      const expectedFormat = 'dd/mm/yyyy';
-      const newFormat = component['replaceFormatSeparator']();
-      expect(newFormat).toBe(expectedFormat);
     });
   });
 });

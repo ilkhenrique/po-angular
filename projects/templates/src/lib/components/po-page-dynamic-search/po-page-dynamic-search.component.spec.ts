@@ -11,6 +11,7 @@ import { PoPageDynamicSearchComponent } from './po-page-dynamic-search.component
 import { PoAdvancedFilterComponent } from './po-advanced-filter/po-advanced-filter.component';
 import { PoPageCustomizationModule } from '../../services/po-page-customization/po-page-customization.module';
 import { expectBrowserLanguageMethod } from './../../util-test/util-expect.spec';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 export const routes: Routes = [];
 
@@ -21,7 +22,13 @@ describe('PoPageDynamicSearchComponent:', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, RouterTestingModule.withRoutes(routes), PoPageCustomizationModule, PoDynamicModule],
+        imports: [
+          FormsModule,
+          RouterTestingModule.withRoutes(routes),
+          PoPageCustomizationModule,
+          PoDynamicModule,
+          HttpClientTestingModule
+        ],
         declarations: [PoPageDynamicSearchComponent, PoAdvancedFilterComponent],
         providers: [TitleCasePipe],
         schemas: [NO_ERRORS_SCHEMA]
@@ -447,6 +454,23 @@ describe('PoPageDynamicSearchComponent:', () => {
       const result = component['getFilterValueToDisclaimer'](field, value);
 
       expect(result).toBe('12/08/2020');
+    });
+
+    it('getFilterValueToDisclaimer: should return formated currency in locale default if field type is PoDynamicFieldType.Currency', () => {
+      component['languageService'].setLanguage('pt');
+      const field = { type: PoDynamicFieldType.Currency, property: '1', label: 'currency' };
+      const value = 322;
+
+      const result = component['getFilterValueToDisclaimer'](field, value);
+      expect(result).toBe('322,00');
+    });
+
+    it("getFilterValueToDisclaimer: should return formated currency in locale 'En' if field type is PoDynamicFieldType.Currency and locale is 'en'", () => {
+      const field = { type: PoDynamicFieldType.Currency, property: '1', label: 'currency', locale: 'en' };
+      const value = 322;
+
+      const result = component['getFilterValueToDisclaimer'](field, value);
+      expect(result).toBe('322.00');
     });
 
     it('getFilterValueToDisclaimer: should return formated date if field type is PoDynamicFieldType.Date with range', () => {

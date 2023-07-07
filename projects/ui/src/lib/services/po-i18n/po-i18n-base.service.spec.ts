@@ -41,10 +41,10 @@ describe('PoI18nService:', () => {
       }
     };
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
         imports: [HttpClientTestingModule, PoLanguageModule, PoI18nModule.config(config)]
-      });
+      }).compileComponents();
 
       service = TestBed.inject(PoI18nService);
     });
@@ -53,13 +53,11 @@ describe('PoI18nService:', () => {
       expect(service).toBeTruthy();
     });
 
-    it('should get literals without parameters', done => {
+    it('should get literals without parameters', () => {
       service.getLiterals().subscribe((literals: any) => {
         expect(literals['text']).toBeTruthy();
         expect(literals['add']).toBeTruthy();
         expect(literals['home']).toBeUndefined();
-
-        done();
       });
     });
 
@@ -80,11 +78,9 @@ describe('PoI18nService:', () => {
       });
     });
 
-    it('should get literals with specific context', done => {
+    it('should get literals with specific context', () => {
       service.getLiterals({ context: 'another' }).subscribe((literals: any) => {
         expect(literals['text']).toBeTruthy();
-
-        done();
       });
     });
 
@@ -98,22 +94,18 @@ describe('PoI18nService:', () => {
       });
     });
 
-    it('should return all literals from context when unexist language', done => {
+    it('should return all literals from context when unexist language', () => {
       service.getLiterals({ context: 'another', language: 'de-DE' }).subscribe((literals: any) => {
         expect(literals['text']).toBe('texto');
         expect(literals['add']).toBe('adicionar');
         expect(literals['remove']).toBe('remover');
-
-        done();
       });
     });
 
-    it('should return all literals filtered', done => {
+    it('should return all literals filtered', () => {
       service.getLiterals({ literals: ['text', 'add', 'test'], language: 'en-us' }).subscribe((literals: any) => {
         expect(literals['text']).toBeTruthy();
         expect(literals['add']).toBeTruthy();
-
-        done();
       });
     });
 
@@ -196,6 +188,24 @@ describe('PoI18nService:', () => {
 
         service.setLanguage(valueParam, reload);
         expect(utils.reloadCurrentPage).not.toHaveBeenCalled();
+      });
+
+      it('setLanguage: should call `languageService.setLanguage` with value language param and set this value in instance', () => {
+        const oldLanguage = service.getLanguage();
+
+        let valueParam = 'en';
+
+        service.setLanguage(valueParam, false);
+        expect(service.getLanguage()).toEqual(valueParam);
+        expect(service.getShortLanguage()).toEqual(valueParam);
+
+        valueParam = 'pt-br';
+
+        service.setLanguage(valueParam, false);
+        expect(service.getLanguage()).toEqual(valueParam);
+        expect(service.getShortLanguage()).toEqual('pt');
+
+        service.setLanguage(oldLanguage);
       });
 
       describe('setConfig:', () => {

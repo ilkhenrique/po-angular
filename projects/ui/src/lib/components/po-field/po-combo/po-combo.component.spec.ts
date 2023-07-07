@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { Observable, of, throwError } from 'rxjs';
 
-import { changeBrowserInnerWidth, configureTestSuite } from './../../../util-test/util-expect.spec';
+import { changeBrowserInnerWidth } from './../../../util-test/util-expect.spec';
 
 import { PoLoadingModule } from '../../po-loading/po-loading.module';
 
@@ -32,15 +32,13 @@ describe('PoComboComponent:', () => {
   let fixture: ComponentFixture<PoComboComponent>;
   let nativeElement: any;
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [PoLoadingModule, PoIconModule],
       declarations: [PoComboComponent, PoFieldContainerComponent, PoFieldContainerBottomComponent, PoCleanComponent],
       providers: [HttpClient, HttpHandler]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoComboComponent);
     component = fixture.componentInstance;
     component.label = 'Label de teste';
@@ -122,6 +120,14 @@ describe('PoComboComponent:', () => {
     spyOn(component, 'applyFilter');
     component.controlApplyFilter('valor');
     expect(component.applyFilter).not.toHaveBeenCalled();
+  });
+
+  it('should call apply filter when cache is false', () => {
+    component.isProcessingValueByTab = true;
+    component.cache = false;
+    spyOn(component, 'applyFilter');
+    component.controlApplyFilter('valor');
+    expect(component.applyFilter).toHaveBeenCalled();
   });
 
   it('should apply filter and call searchForLabel', () => {
@@ -1810,6 +1816,42 @@ describe('PoComboComponent:', () => {
       expect(component.visibleOptions).toEqual(optionFound);
       expect(fixture.debugElement.query(By.css('.po-combo-container-no-data'))).toBeNull();
     });
+
+    it('checkTemplate: should return truthy if visibleOptions has items', () => {
+      component.visibleOptions = [{ label: '1', value: '1' }];
+
+      expect(component.checkTemplate()).toBeTruthy();
+    });
+
+    it('checkTemplate: should return false if visibleOptions is empty', () => {
+      component.visibleOptions = [];
+
+      expect(component.checkTemplate()).toBeFalsy();
+    });
+
+    it('checkTemplate: should return false if cache is false and isServerSearching is true', () => {
+      component.cache = false;
+      component.isServerSearching = true;
+      component.visibleOptions = [{ label: '1', value: '1' }];
+
+      expect(component.checkTemplate()).toBeFalsy();
+    });
+
+    it('checkTemplate: should return truthy if cache is false and isServerSearching is false', () => {
+      component.cache = false;
+      component.isServerSearching = false;
+      component.visibleOptions = [{ label: '1', value: '1' }];
+
+      expect(component.checkTemplate()).toBeTruthy();
+    });
+
+    it('checkTemplate: should return falsy if cache is false and isServerSearching is false but visibleOptions is empty', () => {
+      component.cache = false;
+      component.isServerSearching = false;
+      component.visibleOptions = [];
+
+      expect(component.checkTemplate()).toBeFalsy();
+    });
   });
 });
 
@@ -1821,15 +1863,13 @@ describe('PoComboComponent - with service:', () => {
 
   const mockURL = 'rest/tecnologies';
 
-  configureTestSuite(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, PoLoadingModule],
       declarations: [PoComboComponent, PoFieldContainerComponent, PoFieldContainerBottomComponent],
       providers: [HttpClient, HttpHandler, PoComboFilterService]
-    });
-  });
+    }).compileComponents();
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(PoComboComponent);
     component = fixture.componentInstance;
     component.label = 'Label de teste';
