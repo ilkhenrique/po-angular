@@ -106,7 +106,6 @@
     "@angular/language-service": "~16.1.6",
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-angular": "^17.6.7",
-    "@po-ui/ng-schematics": "0.0.0-PLACEHOLDER",
     "@types/jasmine": "^4.3.5",
     "@types/jasminewd2": "~2.0.10",
     "@types/node": "^20.4.2",
