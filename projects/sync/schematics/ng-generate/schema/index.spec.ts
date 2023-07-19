@@ -19,10 +19,11 @@ xdescribe('schema:', () => {
     name: 'po'
   };
 
-  let appTree: UnitTestTree;
+  let appTree: UnitTestTree | undefined;
 
   beforeEach(async () => {
     appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();
+    if (!appTree) throw new Error("appTree is undefined");
     appTree = await runner
       .runExternalSchematicAsync('@schematics/angular', 'application', componentOptions, appTree)
       .toPromise();
@@ -33,7 +34,7 @@ xdescribe('schema:', () => {
     const tree = await runner
       .runSchematicAsync('schema', { ...componentOptions, name: schemaName }, appTree)
       .toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const files: Array<string> = tree.files;
 
     const fullFilePath = `/projects/${componentOptions.name}/src/app/${schemaName}/${schemaName}.constants.ts`;

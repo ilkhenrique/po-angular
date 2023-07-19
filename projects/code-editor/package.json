@@ -14,17 +14,17 @@
   "dependencies": {
     "@po-ui/ng-components": "0.0.0-PLACEHOLDER",
     "@po-ui/ng-schematics": "0.0.0-PLACEHOLDER",
-    "monaco-editor": "0.24.0",
-    "core-js": "^3.13.0",
+    "monaco-editor": "0.40.0",
+    "core-js": "^3.31.1",
     "intl": "^1.2.5",
-    "tslib": "^2.3.0"
+    "tslib": "^2.6.0"
   },
   "peerDependencies": {
-    "@angular/common": "^15.0.3",
-    "@angular/core": "^15.0.3",
-    "@angular/forms": "^15.0.3",
+    "@angular/common": "^16.1.4",
+    "@angular/core": "^16.1.4",
+    "@angular/forms": "^16.1.4",
     "@po-ui/ng-components": "0.0.0-PLACEHOLDER",
     "monaco-editor": "0.24.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.13.1"
   }
 }

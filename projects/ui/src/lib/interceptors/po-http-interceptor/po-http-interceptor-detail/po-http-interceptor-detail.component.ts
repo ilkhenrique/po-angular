@@ -27,8 +27,11 @@ export class PoHttpInterceptorDetailComponent {
   details: Array<PoHttpInterceptorDetail> = [];
   title: string;
 
-  private language = this.languageService.getShortLanguage();
-  private literals = poHttpInterceptorDetailLiteralsDefault[this.language];
+  //DF private language = this.languageService.getShortLanguage();
+  private language: string; //DF
+
+  //DF private literals = poHttpInterceptorDetailLiteralsDefault[this.language];
+  private literals: {[key: string]: string} = {}; //DF
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   primaryAction: PoModalAction = {
@@ -36,7 +39,10 @@ export class PoHttpInterceptorDetailComponent {
     label: this.literals.closeButton
   };
 
-  constructor(private languageService: PoLanguageService) {}
+  constructor(private languageService: PoLanguageService) {
+    this.language = this.languageService.getShortLanguage(); //DF
+    this.literals = poHttpInterceptorDetailLiteralsDefault[this.language]; //DF
+  }
 
   set detail(details: Array<PoHttpInterceptorDetail>) {
     if (details && details.length) {

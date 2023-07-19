@@ -32,8 +32,8 @@ export class PoRichTextImageModalComponent {
   };
   urlImage: string;
 
-  readonly literals = {
-    ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
+  readonly literals: {[key: string]: string} = { //DF
+    //DF ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
   };
 
   modalCancelAction: PoModalAction = {
@@ -60,7 +60,10 @@ export class PoRichTextImageModalComponent {
     return !!this.urlImage && this.modalImageForm && this.modalImageForm.valid;
   }
 
-  constructor(private languageService: PoLanguageService) {}
+  constructor(private languageService: PoLanguageService) {
+
+    this.literals = { ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()] }; //DF
+  }
 
   openModal() {
     this.saveCursorPosition();

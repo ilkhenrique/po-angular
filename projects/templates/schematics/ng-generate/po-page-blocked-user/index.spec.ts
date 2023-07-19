@@ -20,10 +20,10 @@ xdescribe('po-page-blocked-user:', () => {
     skipTests: false
   };
 
-  let appTree: UnitTestTree;
+  let appTree: UnitTestTree | undefined;
 
   beforeEach(async () => {
-    appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();
+    appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();if (!appTree) throw new Error("appTree is undefined");
     appTree = await runner
       .runExternalSchematicAsync('@schematics/angular', 'application', componentOptions, appTree)
       .toPromise();
@@ -35,8 +35,8 @@ xdescribe('po-page-blocked-user:', () => {
       .runSchematicAsync('po-page-blocked-user', { ...componentOptions, name: componentName }, appTree)
       .toPromise();
 
+    if (!tree) throw new Error("tree is undefined");
     const files: Array<string> = tree.files;
-
     const fullFilePath = (ext: string) =>
       `/projects/${componentOptions.name}/src/app/${componentName}/${componentName}.component.${ext}`;
 
@@ -52,7 +52,7 @@ xdescribe('po-page-blocked-user:', () => {
 
     const options = { ...componentOptions, name: componentName, createModule, project: 'po' };
 
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const files: Array<string> = tree.files;
 
@@ -61,7 +61,7 @@ xdescribe('po-page-blocked-user:', () => {
 
   it('should add declaration component in closest module by default', async () => {
     const options = { ...componentOptions, name: 'customers' };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const moduleContent = getFileContent(tree, `/projects/${componentOptions.name}/src/app/app.module.ts`);
 
@@ -72,7 +72,7 @@ xdescribe('po-page-blocked-user:', () => {
   it('should import <name> component module if createModule is true', async () => {
     const options = { ...componentOptions, name: 'customers', createModule: true };
 
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
     const moduleContent = getFileContent(tree, `/projects/${componentOptions.name}/src/app/app.module.ts`);
 
     expect(moduleContent).toMatch(/import.*CustomersModule.*from '.\/customers\/customers.module'/);
@@ -81,7 +81,7 @@ xdescribe('po-page-blocked-user:', () => {
 
   it('should generate component.less if style is `less`', async () => {
     const options = { ...componentOptions, name: 'customers', style: 'less' };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const files = tree.files;
 
@@ -93,7 +93,7 @@ xdescribe('po-page-blocked-user:', () => {
   it('should generate component with stylesheet `css` if options.style is empty', async () => {
     const options = { ...componentOptions, name: 'customers', style: '' };
 
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
     const files = tree.files;
 
     expect(files).toContain(`/projects/${componentOptions.name}/src/app/customers/customers.component.css`);
@@ -101,7 +101,7 @@ xdescribe('po-page-blocked-user:', () => {
 
   it('shouldn`t generate component spec if `skipTests` is true', async () => {
     const options = { ...componentOptions, name: 'customers', skipTests: true };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const files = tree.files;
 
@@ -121,7 +121,7 @@ xdescribe('po-page-blocked-user:', () => {
     };
 
     const treePath = await runner.runSchematicAsync('po-page-blocked-user', optionsPath, appTree).toPromise();
-
+    if (!treePath) throw new Error("treePath is undefined");
     const files = treePath.files;
 
     expect(files).toContain(`/projects/${componentOptions.name}/src/app/customers/wms/wms.component.spec.ts`);
@@ -134,7 +134,7 @@ xdescribe('po-page-blocked-user:', () => {
     const prefix = 'wms';
 
     const options = { ...componentOptions, name: 'customers', prefix };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const componentContent = getFileContent(
       tree,
@@ -148,7 +148,7 @@ xdescribe('po-page-blocked-user:', () => {
     const prefix = undefined;
 
     const options = { ...componentOptions, name: 'customers', sample: true, prefix };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const componentContent = getFileContent(
       tree,
@@ -162,7 +162,7 @@ xdescribe('po-page-blocked-user:', () => {
     const prefix = '';
 
     const options = { ...componentOptions, name: 'customers', prefix };
-    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();
+    const tree = await runner.runSchematicAsync('po-page-blocked-user', options, appTree).toPromise();if (!tree) throw new Error("tree is undefined");
 
     const componentContent = getFileContent(
       tree,

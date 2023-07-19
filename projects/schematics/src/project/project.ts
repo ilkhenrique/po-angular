@@ -23,7 +23,10 @@ export function getWorkspaceConfigGracefully(tree: Tree): null | WorkspaceSchema
 }
 
 export function getProjectFromWorkspace(workspace: WorkspaceSchema, projectName?: string): WorkspaceProject {
-  const project = workspace.projects[projectName || workspace.defaultProject!];
+  //const project = workspace.projects[projectName || workspace.defaultProject!];
+  if (!projectName) //DF
+    throw new SchematicsException(`Could not find project in workspace: ${projectName}`); //DF
+  const project = workspace.projects[projectName]; //DF
 
   if (!project) {
     throw new SchematicsException(`Could not find project in workspace: ${projectName}`);

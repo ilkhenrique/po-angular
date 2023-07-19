@@ -20,8 +20,8 @@ xdescribe('sidemenu:', () => {
     skipTests: false
   };
 
-  let appTree: UnitTestTree;
-
+  let appTree: UnitTestTree | undefined;
+  if (!appTree) throw new Error("appTree is undefined");
   beforeEach(async () => {
     appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();
     appTree = await runner
@@ -34,6 +34,7 @@ xdescribe('sidemenu:', () => {
       const routerModuleName = 'RouterModule';
 
       const tree = await runner.runSchematicAsync('sidemenu', componentOptions, appTree).toPromise();
+      if (!tree) throw new Error("tree is undefined");
       const fileContent = getFileContent(tree, `projects/${componentOptions.name}/src/app/app.module.ts`);
 
       expect(fileContent).toContain(routerModuleName);
@@ -43,7 +44,7 @@ xdescribe('sidemenu:', () => {
   describe('Component: ', () => {
     it('should create app.component.ts|html|css', async () => {
       const tree = await runner.runSchematicAsync('sidemenu', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const files: Array<string> = tree.files;
 
       expect(files).toContain(`/projects/${componentOptions.name}/src/app/app.component.ts`);
@@ -59,7 +60,7 @@ xdescribe('sidemenu:', () => {
       const htmlComponent = `projects/${componentOptions.name}/src/app/app.component.html`;
 
       const tree = await runner.runSchematicAsync('sidemenu', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const fileContent = getFileContent(tree, htmlComponent);
 
       expect(fileContent).toContain(poWrapper);

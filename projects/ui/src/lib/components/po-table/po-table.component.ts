@@ -91,6 +91,7 @@ import { PoTableService } from './services/po-table.service';
 @Component({
   selector: 'po-table',
   templateUrl: './po-table.component.html',
+  host: {'collision-id': 'PoTableComponent'},
   providers: [PoDateService]
 })
 export class PoTableComponent extends PoTableBaseComponent implements AfterViewInit, DoCheck, OnDestroy, OnInit {

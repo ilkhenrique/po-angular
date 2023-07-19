@@ -25,9 +25,10 @@ export class PoRichTextLinkModalComponent {
   urlLink: string;
   urlLinkText: string;
 
-  readonly literals = {
-    ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
+  readonly literals: {[key: string]: string} = { //DF
+    //DF ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
   };
+
 
   modalCancelAction: PoModalAction = {
     label: this.literals.cancel,
@@ -50,7 +51,9 @@ export class PoRichTextLinkModalComponent {
   private linkElement: any;
   private savedSelection: Range | null;
 
-  constructor(private languageService: PoLanguageService) {}
+  constructor(private languageService: PoLanguageService) {
+    this.literals = { ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()] }; //DF
+  }
 
   linkConfirmAction(): string {
     return this.isLinkEditing ? this.literals.editLink : this.literals.insertLink;

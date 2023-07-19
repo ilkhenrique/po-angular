@@ -20,10 +20,11 @@ xdescribe('po-page-list:', () => {
     skipTests: false
   };
 
-  let appTree: UnitTestTree;
+  let appTree: UnitTestTree | undefined;
 
   beforeEach(async () => {
     appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();
+    if (!appTree) throw new Error("appTree is undefined");
     appTree = await runner
       .runExternalSchematicAsync('@schematics/angular', 'application', componentOptions, appTree)
       .toPromise();
@@ -34,7 +35,7 @@ xdescribe('po-page-list:', () => {
     const tree = await runner
       .runSchematicAsync('po-page-list', { ...componentOptions, name: componentName }, appTree)
       .toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const files: Array<string> = tree.files;
 
     const fullFilePath = (ext: string) =>
@@ -53,7 +54,7 @@ xdescribe('po-page-list:', () => {
     const options = { ...componentOptions, name: componentName, createModule, project: 'po' };
 
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const files: Array<string> = tree.files;
 
     expect(files).toContain(`/projects/${options.project}/src/app/${componentName}/${componentName}.module.ts`);
@@ -62,7 +63,7 @@ xdescribe('po-page-list:', () => {
   it('should add declaration component in closest module by default', async () => {
     const options = { ...componentOptions, name: 'customers' };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const moduleContent = getFileContent(tree, `/projects/${componentOptions.name}/src/app/app.module.ts`);
 
     expect(moduleContent).toMatch(/import.*CustomersComponent.*from '.\/customers\/customers.component'/);
@@ -73,6 +74,7 @@ xdescribe('po-page-list:', () => {
     const options = { ...componentOptions, name: 'customers', createModule: true };
 
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
+    if (!tree) throw new Error("tree is undefined");
     const moduleContent = getFileContent(tree, `/projects/${componentOptions.name}/src/app/app.module.ts`);
 
     expect(moduleContent).toMatch(/import.*CustomersModule.*from '.\/customers\/customers.module'/);
@@ -82,7 +84,7 @@ xdescribe('po-page-list:', () => {
   it('should generate component.less if style is `less`', async () => {
     const options = { ...componentOptions, name: 'customers', style: 'less' };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const files = tree.files;
 
     expect(files).toContain(
@@ -94,6 +96,7 @@ xdescribe('po-page-list:', () => {
     const options = { ...componentOptions, name: 'customers', style: '' };
 
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
+    if (!tree) throw new Error("tree is undefined");
     const files = tree.files;
 
     expect(files).toContain(`/projects/${componentOptions.name}/src/app/customers/customers.component.css`);
@@ -102,7 +105,7 @@ xdescribe('po-page-list:', () => {
   it('shouldn`t generate component spec if `skipTests` is true', async () => {
     const options = { ...componentOptions, name: 'customers', skipTests: true };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const files = tree.files;
 
     expect(files).toContain(`/projects/${componentOptions.name}/src/app/customers/customers.component.ts`);
@@ -121,7 +124,7 @@ xdescribe('po-page-list:', () => {
     };
 
     const treePath = await runner.runSchematicAsync('po-page-list', optionsPath, appTree).toPromise();
-
+    if (!treePath) throw new Error("treePath is undefined");
     const files = treePath.files;
 
     expect(files).toContain(`/projects/${componentOptions.name}/src/app/customers/wms/wms.component.spec.ts`);
@@ -135,7 +138,7 @@ xdescribe('po-page-list:', () => {
 
     const options = { ...componentOptions, name: 'customers', prefix };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const componentContent = getFileContent(
       tree,
       `/projects/${componentOptions.name}/src/app/customers/customers.component.ts`
@@ -149,7 +152,7 @@ xdescribe('po-page-list:', () => {
 
     const options = { ...componentOptions, name: 'customers', sample: true, prefix };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const componentContent = getFileContent(
       tree,
       `/projects/${componentOptions.name}/src/app/customers/customers.component.ts`
@@ -163,7 +166,7 @@ xdescribe('po-page-list:', () => {
 
     const options = { ...componentOptions, name: 'customers', prefix };
     const tree = await runner.runSchematicAsync('po-page-list', options, appTree).toPromise();
-
+    if (!tree) throw new Error("tree is undefined");
     const componentContent = getFileContent(
       tree,
       `/projects/${componentOptions.name}/src/app/customers/customers.component.ts`

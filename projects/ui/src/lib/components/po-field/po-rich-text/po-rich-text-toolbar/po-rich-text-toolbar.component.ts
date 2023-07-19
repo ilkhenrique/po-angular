@@ -30,8 +30,8 @@ export class PoRichTextToolbarComponent implements AfterViewInit {
 
   @Output('p-link-editing') linkEditing = new EventEmitter<any>();
 
-  readonly literals = {
-    ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
+  readonly literals: {[key: string]: string} = { //DF
+    //DF ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()]
   };
 
   alignButtons: Array<PoRichTextToolbarButtonGroupItem> = [
@@ -134,7 +134,9 @@ export class PoRichTextToolbarComponent implements AfterViewInit {
     return isIE();
   }
 
-  constructor(private languageService: PoLanguageService) {}
+  constructor(private languageService: PoLanguageService) {
+    this.literals = { ...poRichTextLiteralsDefault[this.languageService.getShortLanguage()] }; //DF
+  }
 
   ngAfterViewInit() {
     this.removeButtonFocus();

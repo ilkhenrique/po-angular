@@ -28,12 +28,19 @@ export class PoMenuFilterComponent {
 
   @Output('p-filter') filter = new EventEmitter();
 
-  public literals = {
-    ...poMenuFilterLiteralsDefault[this.languageService.getLanguageDefault()],
-    ...poMenuFilterLiteralsDefault[this.languageService.getShortLanguage()]
+  readonly literals: {[key: string]: string} = { //DF
+    //...poMenuFilterLiteralsDefault[this.languageService.getLanguageDefault()], // DF
+    //...poMenuFilterLiteralsDefault[this.languageService.getShortLanguage()] // DF
   };
 
-  constructor(public languageService: PoLanguageService) {}
+  constructor(public languageService: PoLanguageService) {
+    this.literals = { // DF
+      ...poMenuFilterLiteralsDefault[this.languageService.getLanguageDefault()], // DF
+      ...poMenuFilterLiteralsDefault[this.languageService.getShortLanguage()] // DF
+    }; // DF
+
+  }
+  
   filterItems(search: string) {
     this.filter.emit(search);
   }

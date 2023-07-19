@@ -1,9 +1,9 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 
 import * as LocalForage from 'localforage';
-import 'localforage';
+//import 'localforage';
 
-import IdleQueue from 'custom-idle-queue';
+import { IdleQueue } from 'custom-idle-queue';
 
 import { PoLokiDriver } from '../drivers/lokijs/po-loki-driver';
 import { PoStorageConfig } from './po-storage-config.interface';

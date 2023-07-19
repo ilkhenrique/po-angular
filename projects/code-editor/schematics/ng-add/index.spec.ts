@@ -24,10 +24,11 @@ xdescribe('Schematic: ng-add', () => {
     name: 'po'
   };
 
-  let appTree: UnitTestTree;
+  let appTree: UnitTestTree | undefined;
 
   beforeEach(async () => {
     appTree = await runner.runExternalSchematicAsync('@schematics/angular', 'workspace', workspaceOptions).toPromise();
+    if (!appTree) throw new Error("appTree is undefined");
     appTree = await runner
       .runExternalSchematicAsync('@schematics/angular', 'application', componentOptions, appTree)
       .toPromise();
@@ -36,7 +37,7 @@ xdescribe('Schematic: ng-add', () => {
   describe('Dependencies:', () => {
     it('should update package.json with @po-ui/ng-code-editor dependency and run nodePackageInstall', async () => {
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const packageJson = JSON.parse(getFileContent(tree, '/package.json'));
       const dependencies = packageJson.dependencies;
 
@@ -51,6 +52,7 @@ xdescribe('Schematic: ng-add', () => {
       const poCodeEditorModuleName = 'PoCodeEditorModule';
 
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
+      if (!tree) throw new Error("tree is undefined");
       const fileContent = getFileContent(tree, `projects/${componentOptions.name}/src/app/app.module.ts`);
 
       expect(fileContent).toContain(poCodeEditorModuleName);
@@ -62,7 +64,7 @@ xdescribe('Schematic: ng-add', () => {
 
     it('should add default theme in styles of build project', async () => {
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const workspace = getWorkspaceConfigGracefully(tree) ?? ({} as WorkspaceSchema);
       const project = getProjectFromWorkspace(workspace);
 
@@ -70,10 +72,11 @@ xdescribe('Schematic: ng-add', () => {
     });
 
     it('shouldn`t add a theme file in styles of build project multiple times', async () => {
+      if (!appTree) throw new Error("appTree is undefined");
       writePropertiesFileToWorkspace(appTree, defaultThemePath, 'styles');
 
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const workspace = getWorkspaceConfigGracefully(tree) ?? ({} as WorkspaceSchema);
       const project = getProjectFromWorkspace(workspace);
       const styles = getProjectTargetOptions(project, 'build').styles;
@@ -91,7 +94,7 @@ xdescribe('Schematic: ng-add', () => {
 
     it('should add assets of build project', async () => {
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
-
+      if (!tree) throw new Error("tree is undefined");
       const workspace = getWorkspaceConfigGracefully(tree) ?? ({} as WorkspaceSchema);
       const project = getProjectFromWorkspace(workspace);
       const assets = getProjectTargetOptions(project, 'build').assets;
@@ -104,9 +107,11 @@ xdescribe('Schematic: ng-add', () => {
     });
 
     it('shouldn`t add a monaco assets file in assets of build project multiple times', async () => {
+      if (!appTree) throw new Error("appTree is undefined");
       writePropertiesFileToWorkspace(appTree, `${defaultAssetsPath}`, 'assets');
 
       const tree = await runner.runSchematicAsync('ng-add', componentOptions, appTree).toPromise();
+      if (!tree) throw new Error("tree is undefined");
 
       const workspace = getWorkspaceConfigGracefully(tree) ?? ({} as WorkspaceSchema);
       const project = getProjectFromWorkspace(workspace);

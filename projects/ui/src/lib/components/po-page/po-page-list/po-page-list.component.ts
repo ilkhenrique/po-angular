@@ -52,7 +52,8 @@ export class PoPageListComponent
   extends PoPageListBaseComponent
   implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   @ViewChild('filterInput') filterInput: ElementRef;
-  @ViewChild(PoPageContentComponent, { static: true }) poPageContent: PoPageContentComponent;
+  //@ViewChild(PoPageContentComponent, { static: true }) poPageContent: PoPageContentComponent; //DF
+  @ViewChild(PoPageContentComponent, { static: true }) declare poPageContent: PoPageContentComponent; //DF
 
   advancedSearch: string;
   dropdownActions: Array<PoPageAction>;

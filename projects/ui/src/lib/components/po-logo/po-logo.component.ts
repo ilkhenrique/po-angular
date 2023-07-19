@@ -25,9 +25,9 @@ const MAX_LENGHT: number = 125;
   templateUrl: './po-logo.component.html'
 })
 export class PoLogoComponent {
-  readonly literals = {
-    ...poLogoLiteralsDefault[this.poLanguageService.getLanguageDefault()],
-    ...poLogoLiteralsDefault[this.poLanguageService.getShortLanguage()]
+  readonly literals: {[key: string]: string} = { //DF
+    //...poLogoLiteralsDefault[this.poLanguageService.getLanguageDefault()],
+    //...poLogoLiteralsDefault[this.poLanguageService.getShortLanguage()]
   };
 
   private _logo?: string;
@@ -77,7 +77,13 @@ export class PoLogoComponent {
     return this._logoAlt;
   }
 
-  constructor(public poLanguageService: PoLanguageService) {}
+  constructor(public poLanguageService: PoLanguageService) {
+    this.literals = { // DF
+      ...poLogoLiteralsDefault[this.poLanguageService.getLanguageDefault()], // DF
+      ...poLogoLiteralsDefault[this.poLanguageService.getShortLanguage()] // DF
+    }; // DF
+  
+  }
 
   private maxLength(value: string) {
     return value.length > MAX_LENGHT ? value.toString().substring(0, MAX_LENGHT) : value;

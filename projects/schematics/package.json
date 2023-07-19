@@ -15,11 +15,11 @@
     "postbuild": "gulp replaceVersion && cd ../../dist/ng-schematics && npm pack"
   },
   "peerDependencies": {
-    "@angular-devkit/core": "^15.0.3",
-    "@angular-devkit/schematics": "^15.0.3",
-    "@schematics/angular": "^15.0.3"
+    "@angular-devkit/core": "^16.1.4",
+    "@angular-devkit/schematics": "^16.1.4",
+    "@schematics/angular": "^16.1.4"
   },
   "dependencies": {
-    "jsonc-parser": "^3.0.0"
+    "jsonc-parser": "^3.2.0"
   }
 }
